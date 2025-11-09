@@ -1,6 +1,6 @@
 package interfaz;
 
-public interface Sujeto {
+public interface SujetoObservable {
 	void agregarObservador(Observador o);
     void eliminarObservador(Observador o);
     void notificarObservadores();

@@ -16,7 +16,7 @@ public class SudokuTest {
 			{0,0,0,0,1,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0},
 			{0,0,1,0,0,0,0,0,0},
-			{0,0,0,1,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0}		
 	};
 	
@@ -27,40 +27,100 @@ public class SudokuTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void modificarCeldaValorInvalidoMuyBajo() {
+	public void modificarCeldaValorInvalidoMuyBajo(){
 		Sudoku sudoku = new Sudoku();
-		sudoku.modificarCelda(new Point(1,1), -1);
+		sudoku.modificarCelda(1, 2, -1);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void modificarCeldaValorInvalidoMuyAlto() {
+	public void modificarCeldaValorInvalidoMuyAlto(){
 		Sudoku sudoku = new Sudoku();
-		sudoku.modificarCelda(new Point(1,1), 10);
+		sudoku.modificarCelda(1,2, 10);
 	}
 	
-	@Test(expected = IOException.class)
-	public void numeroRepetidoFila() {
+	@Test(expected = IllegalArgumentException.class)
+	public void numeroRepetidoFila(){
 		Sudoku sudoku = new Sudoku();
-		sudoku.modificarCelda(new Point(1,1), 1);
-		sudoku.modificarCelda(new Point(1,8), 1);
+		sudoku.modificarCelda(1, 1, 8);
+		sudoku.modificarCelda(1, 8, 8);
 	}
 	
-	@Test(expected = IOException.class)
-	public void numeroRepetidoColumna() {
+	@Test(expected = IllegalArgumentException.class)
+	public void numeroRepetidoColumna(){
 		Sudoku sudoku = new Sudoku();
-		sudoku.modificarCelda(new Point(1,1), 1);
-		sudoku.modificarCelda(new Point(8,1), 1);
+		sudoku.modificarCelda(1, 1, 1);
+		sudoku.modificarCelda(8, 1, 1);
 	}
 	
-	@Test(expected = IOException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void numeroRepetidoCuadrante() {
 		Sudoku sudoku = new Sudoku();
-		sudoku.modificarCelda(new Point(1,1), 1);
-		sudoku.modificarCelda(new Point(2,2), 1);
+		sudoku.modificarCelda(1, 1, 1);
+		sudoku.modificarCelda(2, 2, 1);
 	}
 	
 	@Test
 	public void tableroConSolucion() {
-		
+		InstanciaSudoku instancia = new InstanciaSudoku(tablero);
+		Sudoku sudoku = new Sudoku(instancia);
+		assertTrue(sudoku.haySolucion());
+	}
+	
+	@Test
+	public void tableroSinSolucionPorFilaInvalida() {
+		int[][] tableroInvalido = {
+				{1,2,3,4,5,6,7,8,9},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				
+				
+				{0,0,1,0,0,0,0,0,1},
+				
+				
+				{0,0,0,0,0,0,0,0,0}		
+		};
+		InstanciaSudoku instancia = new InstanciaSudoku(tableroInvalido);
+		Sudoku sudoku = new Sudoku(instancia);
+		assertFalse(sudoku.haySolucion());
+	}
+	
+	@Test
+	public void tableroSinSolucionPorColumnaInvalida() {
+		int[][] tableroInvalido = {
+				{1,2,3,4,5,6,7,8, 	9},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	0},
+				{0,0,0,0,0,0,0,0, 	9}		
+		};
+		InstanciaSudoku instancia = new InstanciaSudoku(tableroInvalido);
+		Sudoku sudoku = new Sudoku(instancia);
+		assertFalse(sudoku.haySolucion());
+	}
+	
+	@Test
+	public void tableroSinSolucionPorCuadranteInvalido() {
+		int[][] tableroInvalido = {
+				{1,2,3,4,5,6,  		7,8,9},
+				{0,0,0,0,0,0, 	 	0,0,0},
+				{0,0,0,0,0,0,  		8,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0},
+				{0,0,0,0,0,0,0,0,0}		
+		};
+		InstanciaSudoku instancia = new InstanciaSudoku(tableroInvalido);
+		Sudoku sudoku = new Sudoku(instancia);
+		assertFalse(sudoku.haySolucion());
 	}
 }
