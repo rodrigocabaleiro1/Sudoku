@@ -20,33 +20,33 @@ public class SolverSudoku implements interfaz.SujetoObservable{
 	}
 	
 	public void resolverSudoku() {
-		if(!sudoku.haySolucion()) {
-			soluciones = null;
-		} else {
+		if(sudoku.haySolucion()) {
 			probarConTodosLosValores(sudoku, 0, 0);
-			soluciones.remove(null);
 		}
+
 	}
 
 	private void probarConTodosLosValores(Sudoku solucionActual, int fila, int columna) {
-		for(int valor = 1; valor < 10; valor++) {
-			resolverSudoku(solucionActual.clonar(), fila, columna, valor);
+		if(!solucionActual.tableroCompleto()) {
+			if(solucionActual.celdaModificable(fila, columna)) {
+				for(int valor = 1; valor <= 9; valor++) {
+					resolverSudoku(solucionActual.clonar(), fila, columna, valor);
+				}
+			} else {
+				int[] siguienteCelda = siguienteCelda(fila, columna);
+				fila = siguienteCelda[0];
+				columna = siguienteCelda[1];
+				probarConTodosLosValores(solucionActual, fila, columna);
+			}
+		}else {
+			soluciones.add(solucionActual);
 		}
 	}
 
 	private void resolverSudoku(Sudoku solucionActual, int filaActual, int columnaActual, int valorActual) {
-		if (solucionActual.tableroCompleto()) {
-			soluciones.add(solucionActual);
-		} else {
-			int siguienteFila = filaActual;
-			int siguienteColumna = columnaActual;
-			System.out.println(columnaActual + " | " + filaActual + " = " + valorActual);
-			if(siguienteFila >= 8) {
-				siguienteColumna++;
-				siguienteFila = 0;
-			}else {
-				siguienteFila++;
-			}
+			int[] siguienteCelda = siguienteCelda(filaActual, columnaActual);
+			int siguienteFila = siguienteCelda[0];			
+			int siguienteColumna = siguienteCelda[1];			
 			try {
 				solucionActual.modificarCelda(filaActual, columnaActual, valorActual);
 				probarConTodosLosValores(solucionActual, siguienteFila, siguienteColumna);
@@ -54,8 +54,16 @@ public class SolverSudoku implements interfaz.SujetoObservable{
 				probarConTodosLosValores(solucionActual, siguienteFila, siguienteColumna);
 			} catch (IllegalArgumentException e) {
 			}
-		}
 
+	}
+	
+	private int[] siguienteCelda(int fila, int columna) {
+	    columna++;
+	    if (columna == 9) {
+	    	columna = 0;
+	        fila++;
+	    }
+	    return new int[]{fila, columna};
 	}
 
 	public HashSet<Sudoku> soluciones() throws SudokuSinSolucionException{

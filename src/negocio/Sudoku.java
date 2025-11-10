@@ -8,31 +8,28 @@ import java.util.Set;
 
 public class Sudoku{
 	private int [][] tablero;
-	boolean[][] celdasInmutables;
 	int cantidadCeldasInmutables;
 
 	public Sudoku() {
 		tablero = new int [9][9];
-		celdasInmutables = new boolean [9][9];
 		cantidadCeldasInmutables = 0;
 	}
 	
 	public Sudoku(InstanciaSudoku instancia) {
 		this.tablero = instancia.obtenerInstancia();
-		celdasInmutables = new boolean [9][9];
 		cantidadCeldasInmutables = 0;
 		determinarCeldasInmutables();
+	}
+	
+	public boolean valorCorrectoEnCelda(int fila, int columna, int valor) {
+		return this.tablero[fila][columna] == valor;
 	}
 
 	private void determinarCeldasInmutables() {
 		for(int f = 0; f < tablero.length; f++) {
 			for (int c = 0; c < tablero.length; c++) {
 				if (tablero[f][c] != 0) {
-					celdasInmutables[f][c] = true;
 					cantidadCeldasInmutables++;
-				}
-				else {
-					celdasInmutables[f][c] = false;
 				}
 			}
 		}
@@ -53,7 +50,7 @@ public class Sudoku{
 	}
 	
 	private void verificarCeldaModificable(int fila, int col) throws CeldaInmutableException{
-		if(celdasInmutables[fila] [col]) {
+		if(!celdaModificable(fila, col)) {
 			throw new CeldaInmutableException("¡Esta celda NO puede modificarse! Celda: (" + fila + ", " + col + ")");
 		}
 	}
@@ -197,8 +194,14 @@ public class Sudoku{
 	}
 
 	public Sudoku clonar() {
-		InstanciaSudoku instanciaActual = new InstanciaSudoku(tablero);
-		return new Sudoku(instanciaActual);
+		int[][] copia = new int[9][9];
+	    for (int i = 0; i < 9; i++) {
+	    	for (int j = 0; j < 9; j++) {
+	        	copia[i][j] = tablero[i][j];
+	    	}
+	    }
+	    InstanciaSudoku instancia = new InstanciaSudoku(copia);
+	    return new Sudoku(instancia);
 	}
 	
 	@Override 
@@ -237,16 +240,16 @@ public class Sudoku{
         return resultado;
     }
 
-    private boolean valorCorrectoEnCelda(int fila, int columna, int valor) {
-		return this.tablero[fila][columna] == valor;
-	}
-
 	@Override
     public int hashCode() {
     	int resultado = Arrays.deepHashCode(tablero);
-    	resultado = 31 * resultado + Arrays.deepHashCode(celdasInmutables);
+    	resultado = 31 * resultado;
         return resultado;
     }
+
+	public boolean celdaModificable(int fila, int columna) {
+		return tablero[fila][columna] == 0;
+	}
 }
 
 @SuppressWarnings("serial")

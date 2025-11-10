@@ -14,7 +14,7 @@ public class InstanciaSudoku {
 		this.sudoku = sudoku;
 	}
 
-	private static InstanciaSudoku generarInstanciaAleatoria() {
+	public static InstanciaSudoku generarInstanciaAleatoria() {
 		int[][] sudoku = new int[9][9];
 		Random random = new Random();
 		for (int i = 0; i < sudoku.length; i++) {
