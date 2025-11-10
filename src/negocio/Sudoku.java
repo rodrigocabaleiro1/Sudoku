@@ -2,21 +2,25 @@ package negocio;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Sudoku {
+public class Sudoku{
 	private int [][] tablero;
 	boolean[][] celdasInmutables;
+	int cantidadCeldasInmutables;
 
 	public Sudoku() {
 		tablero = new int [9][9];
 		celdasInmutables = new boolean [9][9];
+		cantidadCeldasInmutables = 0;
 	}
 	
 	public Sudoku(InstanciaSudoku instancia) {
 		this.tablero = instancia.obtenerInstancia();
 		celdasInmutables = new boolean [9][9];
+		cantidadCeldasInmutables = 0;
 		determinarCeldasInmutables();
 	}
 
@@ -25,6 +29,7 @@ public class Sudoku {
 			for (int c = 0; c < tablero.length; c++) {
 				if (tablero[f][c] != 0) {
 					celdasInmutables[f][c] = true;
+					cantidadCeldasInmutables++;
 				}
 				else {
 					celdasInmutables[f][c] = false;
@@ -33,7 +38,10 @@ public class Sudoku {
 		}
 	}
 	
-	public void modificarCelda(int fila, int col, int valor){
+	public boolean tableroCompleto() {
+		return cantidadCeldasInmutables == 9*9;
+	}
+	public void modificarCelda(int fila, int col, int valor) throws RuntimeException{
 		verificarFilayColumna(fila,col);
 		verificarCeldaModificable(fila, col);
 		validarValor(valor);
@@ -41,6 +49,7 @@ public class Sudoku {
 		validarValorEnColumna(col, valor);
 		validarValorEnCuadrante(fila, col, valor);
 		tablero[fila][col] = valor;
+		cantidadCeldasInmutables++;
 	}
 	
 	private void verificarCeldaModificable(int fila, int col) throws CeldaInmutableException{
@@ -185,7 +194,59 @@ public class Sudoku {
 				}
 			}
 		}
-	}	
+	}
+
+	public Sudoku clonar() {
+		InstanciaSudoku instanciaActual = new InstanciaSudoku(tablero);
+		return new Sudoku(instanciaActual);
+	}
+	
+	@Override 
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("--------------SUDOKU-----------------\n");
+		sb.append("_____________________________________\n");
+		for(int f = 0; f < 9; f++) {
+			sb.append("|");
+			for(int c = 0; c < 9; c++) {
+				int celda = tablero[f][c];
+				if(celda == 0) {
+					sb.append("   |");					
+				}else {
+					sb.append(" " + celda + " |");
+				}
+			}
+			sb.append("\n");
+
+			sb.append("_____________________________________\n");
+		}
+		return sb.toString();
+	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // misma referencia
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Sudoku otro = (Sudoku) obj;
+        boolean resultado = true;
+        for (int fila = 0; fila < 9; fila++) {
+            for (int col = 0; col < 9; col++) {
+                resultado &= otro.valorCorrectoEnCelda(fila, col, tablero[fila][col]);
+            }
+        }
+        return resultado;
+    }
+
+    private boolean valorCorrectoEnCelda(int fila, int columna, int valor) {
+		return this.tablero[fila][columna] == valor;
+	}
+
+	@Override
+    public int hashCode() {
+    	int resultado = Arrays.deepHashCode(tablero);
+    	resultado = 31 * resultado + Arrays.deepHashCode(celdasInmutables);
+        return resultado;
+    }
 }
 
 @SuppressWarnings("serial")

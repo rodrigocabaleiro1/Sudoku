@@ -1,5 +1,5 @@
 package interfaz;
 
 public interface Observador {
-	void notificar();
+	void notificar(Object o);
 }

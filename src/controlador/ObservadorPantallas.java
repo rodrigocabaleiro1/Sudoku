@@ -7,7 +7,7 @@ public class ObservadorPantallas implements interfaz.Observador{
 	}
 
 	@Override
-	public void notificar() {
+	public void notificar(Object o) {
 		// TODO Auto-generated method stub
 		
 	}
