@@ -23,6 +23,7 @@ public class SolverSudoku implements interfaz.SujetoObservable{
 		if(sudoku.haySolucion()) {
 			probarConTodosLosValores(sudoku, 0, 0);
 		}
+		notificarObservadores();
 
 	}
 
@@ -77,7 +78,6 @@ public class SolverSudoku implements interfaz.SujetoObservable{
 	@Override
 	public void agregarObservador(Observador o) {
 		observadores.add(o);
-		
 	}
 	
 	@Override

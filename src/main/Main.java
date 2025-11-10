@@ -48,7 +48,7 @@ public class Main {
 		};
 		
 		
-		InstanciaSudoku i= new InstanciaSudoku(tablero2);//InstanciaSudoku.generarInstanciaAleatoria();
+		InstanciaSudoku i= new InstanciaSudoku(tablero);//InstanciaSudoku.generarInstanciaAleatoria();
 		Sudoku s = new Sudoku(i);
 		System.out.println("INSTANCIA INICIAL");
 		System.out.println(s);
