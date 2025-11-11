@@ -14,8 +14,8 @@ public class SolverSudoku implements interfaz.SujetoObservable{
 	private Sudoku sudoku;
 	private Set<Sudoku> soluciones;
 	
-	public SolverSudoku(Sudoku sudoku) {
-		this.sudoku = sudoku;
+	public SolverSudoku(InstanciaSudoku sudoku) {
+		this.sudoku = new Sudoku(sudoku);
 		soluciones = new HashSet<Sudoku>();
 	}
 	

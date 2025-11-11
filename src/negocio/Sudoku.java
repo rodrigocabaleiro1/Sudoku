@@ -21,6 +21,10 @@ public class Sudoku{
 		determinarCeldasInmutables();
 	}
 	
+	public boolean celdaModificable(int fila, int columna) {
+		return tablero[fila][columna] == 0;
+	}
+	
 	public boolean valorCorrectoEnCelda(int fila, int columna, int valor) {
 		return this.tablero[fila][columna] == valor;
 	}
@@ -246,10 +250,6 @@ public class Sudoku{
     	resultado = 31 * resultado;
         return resultado;
     }
-
-	public boolean celdaModificable(int fila, int columna) {
-		return tablero[fila][columna] == 0;
-	}
 }
 
 @SuppressWarnings("serial")
