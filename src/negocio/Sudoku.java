@@ -21,6 +21,10 @@ public class Sudoku{
 		determinarCeldasInmutables();
 	}
 	
+	public InstanciaSudoku obtenerSudoku() {
+		return new InstanciaSudoku(tablero);
+	}
+	
 	public boolean celdaModificable(int fila, int columna) {
 		return tablero[fila][columna] == 0;
 	}

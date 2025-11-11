@@ -1,5 +1,7 @@
 package interfaz;
 
+import negocio.SolverSudoku;
+
 public interface Observador {
-	void notificar(Object o);
+	void notificar(SolverSudoku o);
 }

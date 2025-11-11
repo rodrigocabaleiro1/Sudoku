@@ -70,4 +70,8 @@ public class InstanciaSudoku {
 	public int[][] obtenerInstancia(){
 		return sudoku;
 	}
+
+	public int obtenerValor(int fila, int columna) {
+		return this.sudoku[fila][columna];
+	}
 }

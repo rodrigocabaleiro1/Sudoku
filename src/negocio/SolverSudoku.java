@@ -67,11 +67,15 @@ public class SolverSudoku implements interfaz.SujetoObservable{
 	    return new int[]{fila, columna};
 	}
 
-	public HashSet<Sudoku> soluciones() throws SudokuSinSolucionException{
+	public HashSet<InstanciaSudoku> soluciones() throws SudokuSinSolucionException{
 		if(this.soluciones == null || soluciones.size() == 0) {
 			throw new SudokuSinSolucionException("¡No hay soluciones posibles para esta Instancia de Sudoku!");
 		}
-		return new HashSet<Sudoku>(this.soluciones);
+		HashSet<InstanciaSudoku> ret = new HashSet<InstanciaSudoku>();
+		for(Sudoku s: soluciones) {
+			ret.add(s.obtenerSudoku());
+		}
+		return ret;
 	}
 	
 	
